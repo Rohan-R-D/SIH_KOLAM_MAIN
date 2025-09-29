@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kolam Generator - Advanced Pattern Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Kolam Generator</h1>
+            <p>Generate and analyze beautiful Kolam patterns using mathematical principles</p>
+            <div class="theme-toggle">
+                <button id="theme-toggle" class="btn-theme">🌙 Dark Mode</button>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Navigation Tabs -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="generate">Generate</button>
+                <button class="tab-btn" data-tab="analyze">Analyze</button>
+                <button class="tab-btn" data-tab="upload">Upload Image</button>
+                <button class="tab-btn" data-tab="animate">Animate</button>
+                <button class="tab-btn" data-tab="export">Export</button>
+            </div>
+
+            <!-- Generate Tab -->
+            <div id="generate-tab" class="tab-content active">
+                <div class="form-container">
+                    <form id="kolam-form" action="/generate" method="post">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="grid-size">Grid Size:</label>
+                                <select id="grid-size" name="grid_size" class="form-control">
+                                    {% for size in [3, 5, 7, 9, 11, 13, 15] %}
+                                        <option value="{{ size }}" {% if grid_size == size %}selected{% endif %}>{{ size }}x{{ size }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pattern">Pattern Type:</label>
+                                <select id="pattern" name="pattern" class="form-control">
+                                    {% for category, patterns in pattern_categories.items() %}
+                                        <optgroup label="{{ category }}">
+                                            {% for p in patterns %}
+                                                <option value="{{ p }}" {% if pattern == p %}selected{% endif %}>
+                                                    {{ p|title }}
+                                                </option>
+                                            {% endfor %}
+                                        </optgroup>
+                                    {% endfor %}
+                                </select>
+                                <small class="pattern-description" id="pattern-description">
+                                    {{ get_pattern_description(pattern) }}
+                                </small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="include_analysis" value="true" {% if analysis %}checked{% endif %}>
+                                    Include Mathematical Analysis
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Generate Kolam</button>
+                    </form>
+                </div>
+                
+                <div class="kolam-container">
+                    {% if svg %}
+                        <div class="kolam-display">
+                            {{ svg|safe }}
+                        </div>
+                        <div class="export-dropdown">
+                            <button class="btn-primary export-toggle">⬇️ Export Pattern</button>
+                            <div class="export-menu">
+                              <button onclick="exportPattern('svg')">SVG</button>
+                              <button onclick="exportPattern('png')">PNG</button>
+                              <button onclick="exportPattern('jpg')">JPG</button>
+                              <button onclick="exportPattern('all')">All Formats</button>
+                            </div>
+                          </div>
+                          
+                          <div class="sharing-buttons">
+                            <button onclick="createShareableLink()" class="btn-secondary">🔗 Create Shareable Link</button>
+                            <button onclick="batchExport()" class="btn-accent">📦 Batch Export All Patterns</button>
+                          </div>
+                    {% else %}
+                        <div class="kolam-placeholder">
+                            <p>Select parameters and click "Generate Kolam" to create your pattern</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Analysis Tab -->
+            <div id="analyze-tab" class="tab-content">
+                <div class="analysis-container">
+                    {% if analysis %}
+                        <h3>Mathematical Analysis</h3>
+                        <div class="analysis-grid">
+                            <div class="analysis-card">
+                                <h4>Symmetry Analysis</h4>
+                                <div class="symmetry-results">
+                                    {% for sym_type, is_sym in analysis.symmetry.items() %}
+                                        <div class="symmetry-item">
+                                            <span class="symmetry-label">{{ sym_type|title }}:</span>
+                                            <span class="symmetry-value {% if is_sym %}positive{% else %}negative{% endif %}">
+                                                {% if is_sym %}✅ Yes{% else %}❌ No{% endif %}
+                                            </span>
+                                            <button class="info-btn" onclick="showSymmetryInfo('{{ sym_type }}')">ℹ️</button>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="analysis-card">
+                                <h4>Pattern Classification</h4>
+                                <p><strong>Type:</strong> {{ analysis.pattern_type }}</p>
+                                <div class="attributes">
+                                    {% for attr, value in analysis.attributes.items() %}
+                                        <div class="attribute-item">
+                                            <span class="attribute-label">{{ attr|replace('_', ' ')|title }}:</span>
+                                            <span class="attribute-value {% if value %}positive{% else %}negative{% endif %}">
+                                                {% if value %}✅{% else %}❌{% endif %}
+                                            </span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="analysis-card">
+                                <h4>Repetition Analysis</h4>
+                                <p><strong>Has Repetition:</strong> 
+                                    {% if analysis.repetition.has_repetition %}✅ Yes{% else %}❌ No{% endif %}
+                                </p>
+                                {% if analysis.repetition.has_repetition %}
+                                    <p><strong>Description:</strong> {{ analysis.repetition.description }}</p>
+                                    <p><strong>Motif Size:</strong> {{ analysis.repetition.motif_size }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="no-analysis">
+                            <p>Generate a pattern with "Include Mathematical Analysis" checked to see detailed analysis.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Upload Tab -->
+            <div id="upload-tab" class="tab-content">
+                <div class="upload-container">
+                    <h3>Upload Hand-drawn Kolam</h3>
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                        <div class="upload-prompt">
+                            <p>📸 Click to upload an image of your hand-drawn Kolam</p>
+                            <p>Supported formats: JPG, PNG</p>
+                        </div>
+                    </div>
+                    <div id="upload-result" class="upload-result" style="display: none;">
+                        <h4>Analysis Results:</h4>
+                        <div id="detected-pattern"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animate Tab -->
+            <div id="animate-tab" class="tab-content">
+                <div class="animation-container">
+                    <h3>Pattern Animation</h3>
+                    <div class="animation-controls">
+                        <button class="btn-primary" onclick="generateAnimation()">Generate Animation</button>
+                        <button class="btn-secondary" onclick="playAnimation()" id="play-btn" disabled>Play</button>
+                        <button class="btn-secondary" onclick="pauseAnimation()" id="pause-btn" disabled>Pause</button>
+                        <button class="btn-secondary" onclick="resetAnimation()" id="reset-btn" disabled>Reset</button>
+                    </div>
+                    <div class="animation-slider-container">
+                        <label for="speed-slider">Animation Speed:</label>
+                        <input type="range" id="speed-slider" min="0.5" max="5" step="0.5" value="1">
+                        <span id="speed-value">1.0x</span>
+                    </div>
+                    <div id="animation-display" class="animation-display"></div>
+                </div>
+            </div>
+
+            <!-- Export Tab -->
+            <div id="export-tab" class="tab-content">
+                <div class="export-container">
+                    <h3>Export Options</h3>
+                    <div class="export-options">
+                        <div class="export-format">
+                            <h4>Single Format Export</h4>
+                            <button class="btn-secondary" onclick="exportPattern('svg')">SVG</button>
+                            <button class="btn-secondary" onclick="exportPattern('png')">PNG</button>
+                            <button class="btn-secondary" onclick="exportPattern('jpg')">JPG</button>
+                        </div>
+                        <div class="export-format">
+                            <h4>Batch Export</h4>
+                            <button class="btn-primary" onclick="exportAllFormats()">Export All Formats</button>
+                        </div>
+                        <div class="export-format">
+                            <h4>Sharing</h4>
+                            <button class="btn-secondary" onclick="generateQRCode()">Generate QR Code</button>
+                            <button class="btn-secondary" onclick="sharePattern()">Create Shareable Link</button>
+                        </div>
+                    </div>
+                    <div id="export-results" class="export-results" style="display: none;">
+                        <h4>Export Results:</h4>
+                        <div id="export-files"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>🎨 Kolam Generator - Advanced Mathematical Art Tool</p>
+            <p>Features: Pattern Generation • Symmetry Analysis • Image Reconstruction • Animation • Export</p>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div id="symmetry-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modal-title">Symmetry Information</h3>
+            <p id="modal-content"></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

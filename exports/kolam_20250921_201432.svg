@@ -1,0 +1,60 @@
+
+<svg width="640" height="640" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" fill="white"/>
+
+    <path d="M300,300 Q548.3388183390339,402.86530661973615 479.20000000000005,300.0" 
+          fill="none" stroke="hsl(0, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q548.3388183390339,402.86530661973615 426.71353518862935,426.71353518862935" 
+          fill="none" stroke="hsl(0, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M300,300 Q402.86530661973615,548.3388183390339 426.71353518862935,426.71353518862935" 
+          fill="none" stroke="hsl(45, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q402.86530661973615,548.3388183390339 300.0,479.20000000000005" 
+          fill="none" stroke="hsl(45, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M300,300 Q197.13469338026388,548.3388183390339 300.0,479.20000000000005" 
+          fill="none" stroke="hsl(90, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q197.13469338026388,548.3388183390339 173.28646481137068,426.71353518862935" 
+          fill="none" stroke="hsl(90, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M300,300 Q51.66118166096612,402.8653066197362 173.28646481137068,426.71353518862935" 
+          fill="none" stroke="hsl(135, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q51.66118166096612,402.8653066197362 120.79999999999998,300.0" 
+          fill="none" stroke="hsl(135, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M300,300 Q51.66118166096609,197.1346933802639 120.79999999999998,300.0" 
+          fill="none" stroke="hsl(180, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q51.66118166096609,197.1346933802639 173.28646481137065,173.28646481137068" 
+          fill="none" stroke="hsl(180, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M300,300 Q197.1346933802637,51.66118166096618 173.28646481137065,173.28646481137068" 
+          fill="none" stroke="hsl(225, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q197.1346933802637,51.66118166096618 299.99999999999994,120.79999999999998" 
+          fill="none" stroke="hsl(225, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M300,300 Q402.8653066197362,51.66118166096615 299.99999999999994,120.79999999999998" 
+          fill="none" stroke="hsl(270, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q402.8653066197362,51.66118166096615 426.7135351886293,173.28646481137065" 
+          fill="none" stroke="hsl(270, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <path d="M300,300 Q548.3388183390339,197.13469338026368 426.7135351886293,173.28646481137065" 
+          fill="none" stroke="hsl(315, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M300,300 Q548.3388183390339,197.13469338026368 479.20000000000005,299.99999999999994" 
+          fill="none" stroke="hsl(315, 70%, 50%)" stroke-width="2" 
+          stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>

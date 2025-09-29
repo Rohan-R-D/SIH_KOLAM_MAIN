@@ -1,0 +1,24 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Version control
+.git/
+.gitignore
+
+# Virtual environments
+venv/
+env/
+.env
+
+# Node.js dependencies
+node_modules/
+
+# IDE files
+.idea/
+.vscode/
+
+# Local development files
+*.log
+.DS_Store
